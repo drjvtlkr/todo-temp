@@ -1,5 +1,7 @@
+'use server'
+
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/supabase/client";
 
 interface Tasks {
   task: string;

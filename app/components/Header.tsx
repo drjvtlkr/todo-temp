@@ -1,3 +1,5 @@
+'use client'
+
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,14 +32,14 @@ const Header = ({ children, className }: HeaderProps) => {
         </div>
 
         <div className="flex-grow text-center">
-          <h1 className="scroll-m-20 text-4xl font-bold tracking-tight lg:text-5xl">
+          <h1 className="scroll-m-20 text-4xl tracking-tight lg:text-5xl">
             Your go-to todo Application
           </h1>
         </div>
 
         <div className="flex-shrink-0 pr-8">
           <Button
-            className="bg-blue-600 text-white text-xl dark:text-white"
+            className="bg-blue-600 text-white hover:bg-blue-500 text-xl dark:text-white"
             onClick={handleButtonClick}>
             <IoAdd className="text-xl mr-2" />
             Add Task

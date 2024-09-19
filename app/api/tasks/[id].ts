@@ -1,4 +1,6 @@
-import { createClient } from '@/utils/supabase/server';
+'use server'
+
+import { createClient } from '@/supabase/client';
 import type { NextApiRequest, NextApiResponse } from 'next';
 
 const supabase = createClient()
