@@ -49,14 +49,17 @@ import React from "react";
 const Home = () => {
   return (
     <>
-      <div className="flex justify-between items-center">
-        {/* Left (Header) */}
+      <main className="flex flex-col">
         <Header>
-          <div>
-            
+          <div className="text-center">
+            <p>Privacy based ToDo Application.</p>
           </div>
         </Header>
-      </div>
+
+          <div className="p-4">
+            <p>This is the main content of the page.</p>
+          </div>
+      </main>
     </>
   );
 };

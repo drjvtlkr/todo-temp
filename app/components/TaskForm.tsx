@@ -40,7 +40,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
       } catch (error) {
         // Error handling: log and show alert
         console.error("Error adding task:", error);
-        alert(`Error adding task: ${error.response ? error.response.data.message : error.message}`);
       }
     };
     
