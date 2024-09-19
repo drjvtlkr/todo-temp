@@ -70,5 +70,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
     </Card>
   );
 };
+}
 
 export default TaskForm;
