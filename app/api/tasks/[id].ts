@@ -1,8 +1,7 @@
+import { createClient } from '@/utils/supabase/server';
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { supabase } from '../../../lib/supabaseClient';
 
-// import supabase = useClient
-
+const supabase = createClient()
 interface Task {
   task: string;
   status?: boolean;
