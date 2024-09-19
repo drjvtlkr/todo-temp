@@ -3,7 +3,7 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
-import axios from 'axios';
+import axios from "axios";
 
 interface TaskFormProps {
   onAddTask: () => void;
@@ -33,7 +33,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
       if (response.status >= 200 && response.status < 300) {
         setTask("");
         setStatus(false);
-        onAddTask();  // Call the function to refresh task list or perform other actions
+        onAddTask(); // Call the function to refresh task list or perform other actions
         console.log("Task added successfully:", response.data);
       }
     } catch (error) {
@@ -42,8 +42,8 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
     }
   };
 
-  const handleCheckboxChange = (value: boolean) => {
-    setStatus(value);
+  const handleCheckboxChange = (checked: boolean) => {
+    setStatus(checked);
   };
 
   console.log(task, status);
@@ -61,7 +61,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ onAddTask }) => {
       <div>
         <Checkbox
           checked={status}
-          onChange={(e) => handleCheckboxChange(e.target.checked)}
+          onCheckedChange={handleCheckboxChange} // Directly passing the checked value
         />
         <label>Status</label>
       </div>
