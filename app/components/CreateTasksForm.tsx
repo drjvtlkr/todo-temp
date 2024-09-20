@@ -15,36 +15,47 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { useState } from "react";
-import axios from "axios";
+import { supabase } from "@/supabase/client"; // Import Supabase client
+import { Toast } from "@/components/ui/toast";
+import { useToast } from "@/hooks/use-toast";
 
 const CreateTasksForm = () => {
   const [task, setTask] = useState("");
   const [status, setStatus] = useState(false);
-  const handleSubmit = async () => {
+
+  const { toast } = useToast();
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+
     if (task.length <= 3) {
       alert("Task must be longer than 3 characters");
       return;
     }
 
     try {
-      const response = await axios.post("/api/tasks", {
-        task,
-        status: false, 
-      });
+      const { data, error } = await supabase
+        .from("tasks")
+        .insert([{ task: task, status: false }]);
 
-      console.log("Response Status:", response.status);
-      console.log("Response Data:", response.data);
-
-      if (response.status >= 200 && response.status < 300) {
-        setTask("");
-        setStatus(false);
-        console.log("Task added successfully:", response.data);
+      if (error) {
+        throw error;
       }
+
+      console.log("Task added successfully:", data);
+      setTask("");
+      setStatus(false);
+      alert("Task added successfully!");
+      toast({
+        title: "Task created Successfully",
+        description: `You have created a task ${task}`,
+      });
     } catch (error) {
       console.error("Error adding task:", error);
-      alert("This was not added!")
+      alert("Task was not added!");
     }
   };
+
   return (
     <>
       <div className="flex justify-center items-center">
@@ -59,7 +70,9 @@ const CreateTasksForm = () => {
           <DialogContent className="sm:max-w-[425px] bg-white">
             <DialogHeader>
               <DialogTitle>Add Task</DialogTitle>
-              <DialogDescription className="text-gray-600">Add the name of the task that you wish to complete</DialogDescription>
+              <DialogDescription className="text-gray-600">
+                Add the name of the task that you wish to complete
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSubmit}>
               <div className="grid w-full items-center gap-4">
@@ -78,7 +91,7 @@ const CreateTasksForm = () => {
                   <label
                     htmlFor="status"
                     className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                    When adding a task you can not mark it Completed !
+                    When adding a task you cannot mark it Completed!
                   </label>
                 </div>
               </div>

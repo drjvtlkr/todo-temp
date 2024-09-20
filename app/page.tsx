@@ -15,7 +15,6 @@ const Home =async () => {
         </Header>
 
           <div className="p-4">
-            <p>This is the main content of the page.</p>
             <DemoPage/>
           </div>
       </main>
