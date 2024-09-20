@@ -48,14 +48,12 @@ export default function DemoPage() {
         status: updatedTask.status,
       })
       .eq("id", taskId)
-      .select(); // Use .select() to return the updated data
+      .select();
 
     if (error) {
       console.error("Error updating task:", error);
     } else {
-      // Update the tasks state with the new values
-      setTasks((prevTasks) =>
-        prevTasks.map((t) => (t.id === taskId ? { ...t, ...data[0] } : t))
+      setTasks((prevTasks) =>prevTasks.map((t) => (t.id === taskId ? { ...t, ...data[0] } : t))
       );
       setEditingTaskId(null);
     }
@@ -74,7 +72,6 @@ export default function DemoPage() {
     if (error) {
       console.error("Error deleting task:", error);
     } else {
-      // Update the tasks state to remove the deleted task
       setTasks((prevTasks) => prevTasks.filter((t) => t.id !== taskId));
     }
   };
@@ -118,7 +115,6 @@ export default function DemoPage() {
               ) : (
                 <Checkbox
                   checked={task.status}
-                  readOnly // Keep readOnly for non-editing mode
                 />
               )}
             </TableCell>
