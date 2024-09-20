@@ -1,14 +1,13 @@
 'use server'
 
 import type { NextApiRequest, NextApiResponse } from "next";
-import { createClient } from "@/supabase/client";
+import { supabase } from "@/supabase/client";
 
 interface Tasks {
   task: string;
   status?: boolean;
 }
 
-const supabase = createClient();
 
 export default async function handler(
   req: NextApiRequest,
