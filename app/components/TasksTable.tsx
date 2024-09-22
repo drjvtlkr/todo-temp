@@ -15,32 +15,33 @@ import { MdOutlineDelete } from "react-icons/md";
 import { Button } from "@/components/ui/button";
 
 export default function DemoPage() {
-  const [tasks, setTasks] = useState([]);
+  const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [editingTaskId, setEditingTaskId] = useState(null);
+  const [editingTaskId, setEditingTaskId] = useState<number| null>(null);
   const [updatedTask, setUpdatedTask] = useState({ task: "", status: false });
 
   useEffect(() => {
     const fetchTasks = async () => {
       const { data, error } = await supabase.from("tasks").select("*");
       if (error) {
-        setError(error);
+        console.log;
+        error;
       } else {
+        console.log(data);
         setTasks(data);
       }
       setLoading(false);
     };
-
     fetchTasks();
   }, []);
 
-  const handleEdit = (task) => {
+  const handleEdit = (task: Task) => {
     setEditingTaskId(task.id);
     setUpdatedTask({ task: task.task, status: task.status });
   };
 
-  const handleSave = async (taskId) => {
+  const handleSave = async (taskId: number) => {
     const { data, error } = await supabase
       .from("tasks")
       .update({
@@ -53,21 +54,19 @@ export default function DemoPage() {
     if (error) {
       console.error("Error updating task:", error);
     } else {
-      setTasks((prevTasks) =>prevTasks.map((t) => (t.id === taskId ? { ...t, ...data[0] } : t))
+      setTasks((prevTasks) =>
+        prevTasks.map((t) => (t.id === taskId ? { ...t, ...data[0] } : t))
       );
       setEditingTaskId(null);
     }
   };
 
-  const handleStatusChange = (e) => {
+  const handleStatusChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUpdatedTask((prev) => ({ ...prev, status: e.target.checked }));
   };
 
-  const handleDelete = async (taskId) => {
-    const { error } = await supabase
-      .from("tasks")
-      .delete()
-      .eq("id", taskId);
+  const handleDelete = async (taskId: number) => {
+    const { error } = await supabase.from("tasks").delete().eq("id", taskId);
 
     if (error) {
       console.error("Error deleting task:", error);
@@ -77,7 +76,7 @@ export default function DemoPage() {
   };
 
   if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error.message}</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <Table>
@@ -100,7 +99,12 @@ export default function DemoPage() {
                 <input
                   type="text"
                   value={updatedTask.task}
-                  onChange={(e) => setUpdatedTask((prev) => ({ ...prev, task: e.target.value }))}
+                  onChange={(e) =>
+                    setUpdatedTask((prev) => ({
+                      ...prev,
+                      task: e.target.value,
+                    }))
+                  }
                 />
               ) : (
                 task.task || "N/A"
@@ -108,26 +112,32 @@ export default function DemoPage() {
             </TableCell>
             <TableCell>
               {editingTaskId === task.id ? (
-                <Checkbox
+                <input
+                type="checkbox"
                   checked={updatedTask.status}
-                  onChange={handleStatusChange}
-                />
+                  onChange={handleStatusChange} />
               ) : (
-                <Checkbox
-                  checked={task.status}
-                />
+                <Checkbox checked={task.status} />
               )}
             </TableCell>
             <TableCell>
-              {task.created_at ? new Date(task.created_at).toLocaleString() : "N/A"}
+              {task.created_at
+                ? new Date(task.created_at).toLocaleString()
+                : "N/A"}
             </TableCell>
             <TableCell className="text-center">
               {editingTaskId === task.id ? (
                 <Button onClick={() => handleSave(task.id)}>Save</Button>
               ) : (
-                <Button onClick={() => handleEdit(task)}> <FiEdit2 /> </Button>
+                <Button onClick={() => handleEdit(task)}>
+                  {" "}
+                  <FiEdit2 />{" "}
+                </Button>
               )}
-              <Button className="pr-4" onClick={() => handleDelete(task.id)} variant="destructive">
+              <Button
+                className="pr-4"
+                onClick={() => handleDelete(task.id)}
+                variant="destructive">
                 <MdOutlineDelete />
               </Button>
             </TableCell>
